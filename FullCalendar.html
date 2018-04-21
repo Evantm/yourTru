@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css' />
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+    <title>Full Calendar Testing</title>
+    <script type="text/javascript">
+        var url1 = new URL(window.location.href)
+        var room = "OM1360";
+        console.log(typeof url1.searchParams);
+        if(typeof url1.searchParams != 'undefined'){
+        	room = url1.searchParams.get("room");
+        	console.log(room);
+        	room = room == null ? 'S261' : room;
+        }
+        var JSLink = "https://yourtru.ca/rooms/" + room + ".json";
+        class_ = '';
+
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        JSElement.onload = OnceLoaded;
+        document.getElementsByTagName('head')[0].appendChild(JSElement);
+
+        window.addEventListener('error', function(e) {
+            if (room == null) {
+                alert('after the url type ?room={classroom}')
+                document.getElementById('calendar').innerHTML = 'Refresh to show changes';
+            } else
+                document.getElementById('calendar').innerHTML = 'It broke';
+        }, true);
+
+        function OnceLoaded() {
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listWeek'
+                },
+                navLinks: true, // can click day/week names to navigate views
+                nowIndicator: true,
+                editable: false,
+                eventLimit: true, // allow "more" link when too many events
+                eventClick: function(calEvent, jsEvent, view) {
+                    var start_date = moment(calEvent.start).format('DD/MM/YYYY HH:mm');
+                    var end_date = moment(calEvent.end).format('DD/MM/YYYY HH:mm');
+                    alert('Title: ' + calEvent.title + '\nStart: ' + start_date + '\nEnd: ' + end_date);
+                },
+                height: 'auto',
+                defaultView: 'agendaWeek',
+                events: class_
+            });
+            dropdown();
+        }
+
+        function dropdown() { // wait for page to load
+            var cityDropdown = $("#rooms"),
+                countryDropdown = $('<select></select>'), // create a country dropdown
+                countries = ['OM', 'AHT', 'AE', 'WL', 'CTT', 'S', 'IB', 'HOL', 'OL']; // ordered list of countries
+
+            // parse the nested dropdown
+            cityDropdown.children().each(function() {
+                var group = $(this),
+                    countryName = group.attr('label'),
+                    option;
+
+                // create an option for the country
+                option = $('<option></option>').text(countryName);
+
+                // store the associated city options
+                option.data('cities', group.children());
+
+                // check if the country should be selected
+                if (group.find(':selected').length > 0) {
+                    option.prop('selected', true);
+                }
+
+                // add the country to the dropdown
+                countryDropdown.append(option);
+            });
+
+            // add the country dropdown to the page
+            cityDropdown.before(countryDropdown);
+
+            // this function updates the city dropdown based on the selected country
+            function updateCities() {
+                var country = countryDropdown.find(':selected');
+                cityDropdown.empty().append(country.data('cities'));
+                console.log(country[0].innerHTML);
+            }
+
+            function updateRoom() {
+                var room = cityDropdown.find(':selected')[0].innerHTML ;
+                console.log(room);
+                $.getScript("https://yourtru.ca/rooms/" + room + ".json", function(){
+                	console.log(class_);
+                	$('#calendar').fullCalendar( 'removeEvents');
+					$('#calendar').fullCalendar( 'addEventSource', class_ );
+                });
+
+			}
+
+
+            // call the function to set the initial cities
+            updateCities();
+
+            // and add the change handler
+            countryDropdown.on('change', updateCities);
+            cityDropdown.on('click', updateRoom);
+        }
+    </script>
+</head>
+
+<body>
+
+    <select id="rooms">
+
+<optgroup label="AE">
+	<option>AE100</option>
+	<option>AE101</option>
+	<option>AE104</option>
+	<option>AE105</option>
+	<option>AE108</option>
+	<option>AE151</option>
+	<option>AE162</option>
+	<option>AE164</option>
+	<option>AE166</option>
+	<option>AE200</option>
+	<option>AE208</option>
+	<option>AE212</option>
+	<option>AE260</option>
+	<option>AE262</option>
+	<option>AE263</option>
+	<option>AE266</option>
+	<option>AE300</option>
+	<option>AE304</option>
+	<option>AE308</option>
+	<option>AE361</option>
+	<option>AE362</option>
+	<option>AE366</option>
+</optgroup>
+<optgroup label="AHT">
+	<option>AHT118</option>
+	<option>AHT122</option>
+	<option>AHT151</option>
+</optgroup>
+<optgroup label="CTT">
+	<option>CTT200</option>
+</optgroup>
+<optgroup label="HOL">
+	<option>HOL204</option>
+	<option>HOL269</option>
+	<option>HOL402</option>
+</optgroup>
+<optgroup label="IB">
+	<option>IB1008</option>
+	<option>IB1010</option>
+	<option>IB1014</option>
+	<option>IB1015</option>
+	<option>IB1019</option>
+	<option>IB1020</option>
+	<option>IB1023</option>
+	<option>IB2004</option>
+	<option>IB2006</option>
+</optgroup>
+<optgroup label="OL">
+	<option>OL127</option>
+</optgroup>
+<optgroup label="OM">
+	<option>OM1330</option>
+	<option>OM1335</option>
+	<option>OM1345</option>
+	<option>OM1350</option>
+	<option>OM1355</option>
+	<option>OM1360</option>
+	<option>OM1365</option>
+	<option>OM1411</option>
+	<option>OM1472</option>
+	<option>OM1498</option>
+	<option>OM1501</option>
+	<option>OM1509</option>
+	<option>OM1561</option>
+	<option>OM1562</option>
+	<option>OM1564</option>
+	<option>OM1565</option>
+	<option>OM1587</option>
+	<option>OM1732</option>
+	<option>OM1741</option>
+	<option>OM1751</option>
+	<option>OM1752</option>
+	<option>OM1761</option>
+	<option>OM1762</option>
+	<option>OM1771</option>
+	<option>OM1772</option>
+	<option>OM1791</option>
+	<option>OM1792</option>
+	<option>OM2216</option>
+	<option>OM2231</option>
+	<option>OM2402</option>
+	<option>OM2422</option>
+	<option>OM2466</option>
+	<option>OM2468</option>
+	<option>OM2515</option>
+	<option>OM2517</option>
+	<option>OM2551</option>
+	<option>OM2552</option>
+	<option>OM2558</option>
+	<option>OM2594</option>
+	<option>OM2612</option>
+	<option>OM2621</option>
+	<option>OM2622</option>
+	<option>OM2632</option>
+	<option>OM2641</option>
+	<option>OM2651</option>
+	<option>OM2652</option>
+	<option>OM2712</option>
+	<option>OM2740</option>
+	<option>OM2741</option>
+	<option>OM2742</option>
+	<option>OM2751</option>
+	<option>OM2761</option>
+	<option>OM2771</option>
+	<option>OM2791</option>
+	<option>OM3612</option>
+	<option>OM3632</option>
+	<option>OM3732</option>
+	<option>OM3741</option>
+	<option>OM3752</option>
+	<option>OM3772</option>
+	<option>OM3782</option>
+</optgroup>
+<optgroup label="S">
+	<option>S203</option>
+	<option>S232</option>
+	<option>S233</option>
+	<option>S237</option>
+	<option>S260</option>
+	<option>S261</option>
+	<option>S266</option>
+	<option>S269</option>
+	<option>S270</option>
+	<option>S273</option>
+	<option>S278</option>
+	<option>S301</option>
+	<option>S307</option>
+	<option>S331</option>
+	<option>S333</option>
+	<option>S337</option>
+	<option>S360</option>
+	<option>S364</option>
+	<option>S367</option>
+	<option>S370</option>
+	<option>S371</option>
+	<option>S373</option>
+	<option>S375</option>
+	<option>S378</option>
+</optgroup>
+
+</select>
+    <ul id='calendar'>
+</body>
+
+</html>

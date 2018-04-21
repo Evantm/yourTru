@@ -1,0 +1,79 @@
+
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css' />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+<!DOCTYPE html>
+<head>
+    <title>Full Calendar Testing</title>
+    <script type="text/javascript">
+
+
+
+        // So once change from dropdown. Fetch json from ws with jquery
+        //     $(function () {
+        //  $.getJSON("./file.json", function (data) {
+        //      }).success(function (data) {
+        //          myArr = data.data;
+        //          doSomething(data.data);
+        //          });
+        //      });
+        // You then assin the json to var which is assigned to events and then call refresh on the calendar 
+        // TODO 
+        //  Helper make json for dropdown
+        //  js generate dropdown from json
+        //  
+        //  merge versions
+        //  fix edge and ie errors
+        //  investigate piggy backing off telbook
+        //  remove get -> dropdown only
+        //  default week view?
+
+        console.log(window.location.href);
+        var JSLink = "https://evanmackay.ca/Full-Calendar/rooms/OM1360.json";
+
+        function onchange(){
+            // TODO get value of drop down
+            // TODO put that into url
+          $.getJSON("./file.json", function (data) {
+              }).success(function (data) {
+                  myArr = data.data;
+                  doSomething(data.data);
+                  });
+        }
+
+
+    	window.addEventListener('error', function(e) {
+    		document.getElementById('calendar').innerHTML= e;
+		}, true);
+
+        function OnceLoaded() {
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listWeek'
+                },
+                navLinks: true, // can click day/week names to navigate views
+                nowIndicator: true,
+                editable: false,
+                eventLimit: true, // allow "more" link when too many events
+                eventClick: function(calEvent, jsEvent, view) {
+                    var start_date = moment(calEvent.start).format('DD/MM/YYYY HH:mm');
+                    var end_date = moment(calEvent.end).format('DD/MM/YYYY HH:mm');
+                    alert('Title: ' + calEvent.title + '\nStart: ' + start_date + '\nEnd: ' + end_date);
+                },
+                defaultView: 'agendaWeek',
+                height: 1000,
+                events: class_
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <ul id='calendar'>
+</body>
+
+</html>
