@@ -33,6 +33,7 @@ function test(ele) {
 		return
 	}	
 
+	console.log('-----------')
 	if (check_3_substr(contents,dob) || check_3_substr(contents,monthNames[dob_month])){
 		$('#message').html('Contains 3 letters from your birthday').css('color', 'red');
 		return
@@ -53,8 +54,9 @@ function check_length(ele){
 
 function check_3_substr(password,word){
 	for (var i = 0; i < word.length+1; i++) {
-		var sub = password.substr(i,i+3)
-		if (word.toLowerCase().indexOf(sub.toLowerCase()) != -1 && sub.length == 3){	
+		var sub = password.substr(i,i+3);
+		sub = sub.substr(0,3);	
+		if (word.toLowerCase().indexOf(sub.toLowerCase()) != -1 && sub.length == 3){
 			return true;
 		}
 	}
