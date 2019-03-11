@@ -43,10 +43,11 @@
 	for (var i = templates.length - 1; i >= 0; i--) {
 		var section = document.createElement("SECTION");
 		var header = document.createElement("H1");
-		var header_text = document.createTextNode(templates[i].type);
+		var header_text = document.createTextNode('\u00A0' + templates[i].type);
 
 		header.appendChild(header_text);
 		section.appendChild(header);
+		section.appendChild( document.createTextNode( '\u00A0' ) );
 
 		for (var j = templates[i].template_list.length - 1; j >= 0; j--) {
 
@@ -60,6 +61,7 @@
 
   			btn.appendChild(text);
   			section.appendChild(btn);
+  			section.appendChild( document.createTextNode( '\u00A0' ) );
 		}
   		document.body.appendChild(section);
   		document.body.appendChild(document.createElement("HR"));
