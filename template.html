@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evan's Templating Site</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script id="json" src="template.json"></script>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+
+	String.prototype.interpolate = function(params) { //regex magic 
+	  const names = Object.keys(params);
+	  const vals = Object.values(params);
+	  return new Function(...names, `return \`${this}\`;`)(...vals);
+	}
+
+	function copyToClipboard(text){
+	    var dummy = document.createElement("input");
+	    document.body.appendChild(dummy);
+	    dummy.setAttribute('value', text);
+	    dummy.select();
+	    document.execCommand("copy");
+	    document.body.removeChild(dummy);
+	}
+
+	function ask_user_for_vars(template_string, variables){ //ask user for each value in json
+		var variables_dict = {} ;
+		for (var i = template_string.length - 1; i >= 0; i--) {
+			variables_dict[template_string[i]] = prompt(template_string[i]);
+		}
+		const result = variables.interpolate(variables_dict);
+		copyToClipboard(result);
+	}
+
+	function add_onclick(btn,template,variables){
+		btn.onclick = function() { ask_user_for_vars(variables,template);}; //needed due to js scope
+	}
+
+
+	for (var i = templates.length - 1; i >= 0; i--) {
+		var section = document.createElement("SECTION");
+		var header = document.createElement("H1");
+		var header_text = document.createTextNode(templates[i].type);
+
+		header.appendChild(header_text);
+		section.appendChild(header);
+
+		for (var j = templates[i].template_list.length - 1; j >= 0; j--) {
+
+			var variables = templates[i].template_list[j].variables;
+			var template = templates[i].template_list[j].template;
+  			var text = document.createTextNode(templates[i].template_list[j].label);
+			
+		  	var btn = document.createElement("BUTTON");
+		  	btn.className  = "btn btn-primary";
+			add_onclick(btn,template,variables);
+
+  			btn.appendChild(text);
+  			section.appendChild(btn);
+		}
+  		document.body.appendChild(section);
+  		document.body.appendChild(document.createElement("HR"));
+	}
+</script>
+</html>

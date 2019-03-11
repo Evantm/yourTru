@@ -1,0 +1,31 @@
+var templates = [
+  {
+    "type": "Students",
+    "template_list": [
+      {
+        "label": "passoword reset",
+        "template": "Hi ${student_name}",
+        "variables": [
+          "student_name"
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "type": "Staff",
+    "template_list": [
+      {
+        "label": "Something Complicated",
+        "template": "Hello ${staff_name}, my name is ${my_name}",
+        "variables": [
+          "staff_name", "my_name"
+        ]
+      }
+    ]
+  }
+
+
+
+]
