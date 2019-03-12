@@ -18,7 +18,7 @@ var templates = [
 				"${signature}"
 			],
         "variables": [
-        	"T_ID","signature"
+        	"T_ID"
         ]
       },
       {
@@ -49,7 +49,7 @@ var templates = [
 			"${signature}"
         ],
         "variables": [
-        	"T_ID", "signature"
+        	"T_ID"
         ]
       },
 
