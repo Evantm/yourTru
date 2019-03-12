@@ -11,6 +11,9 @@
 </body>
 <script type="text/javascript">
 
+	var name = prompt("please enter your name");
+	var signature = '';
+
 	String.prototype.interpolate = function(params) { //regex magic 
 	  const names = Object.keys(params);
 	  const vals = Object.values(params);
@@ -18,19 +21,36 @@
 	}
 
 	function copyToClipboard(text){
-	    var dummy = document.createElement("input");
+	    var dummy = document.createElement("textarea");
+	    dummy.setAttribute("id", "myTextarea");
 	    document.body.appendChild(dummy);
-	    dummy.setAttribute('value', text);
-	    dummy.select();
-	    document.execCommand("copy");
-	    document.body.removeChild(dummy);
+	    document.getElementById("myTextarea").value = text;
+	    document.getElementById("myTextarea").focus();
+	    document.getElementById("myTextarea").select();
+	    document.oncopy = function (e) {
+	    	    setTimeout(function () {
+	    			document.body.removeChild(dummy);
+		    }, 250)
+	    };
 	}
+
 
 	function ask_user_for_vars(template_string, variables){ //ask user for each value in json
 		var variables_dict = {} ;
+
 		for (var i = template_string.length - 1; i >= 0; i--) {
-			variables_dict[template_string[i]] = prompt(template_string[i]);
+			console.log(template_string[i],signature)
+			if (template_string[i] == 'my_name'){
+				variables_dict[template_string[i]] = name;
+			}else if (template_string[i] == 'signature' && false){
+				variables_dict[template_string[i]] = signature;
+				console.log('added signature');
+			}else{	
+ 				variables_dict[template_string[i]] = prompt(template_string[i]);
+			}
 		}
+
+		if (Array.isArray(variables)) { variables = variables.join("\r\n");}
 		const result = variables.interpolate(variables_dict);
 		copyToClipboard(result);
 	}
@@ -41,19 +61,26 @@
 
 
 	for (var i = templates.length - 1; i >= 0; i--) {
+		if (templates[i].type != 'static') {
 		var section = document.createElement("SECTION");
 		var header = document.createElement("H1");
-		var header_text = document.createTextNode('\u00A0' + templates[i].type);
+		var header_text = document.createTextNode('\u00A0' + templates[i].type); // for padding
 
 		header.appendChild(header_text);
 		section.appendChild(header);
-		section.appendChild( document.createTextNode( '\u00A0' ) );
-
+		section.appendChild( document.createTextNode('\u00A0'));
+		}
 		for (var j = templates[i].template_list.length - 1; j >= 0; j--) {
 
 			var variables = templates[i].template_list[j].variables;
 			var template = templates[i].template_list[j].template;
   			var text = document.createTextNode(templates[i].template_list[j].label);
+  			console.log('s',templates[i].template_list[j]);
+			if(templates[i].template_list[j].label == 'signature'){
+				signature = templates[i].template_list[j].template.join("\r\n");
+				console.log('sig',signature);
+				continue;
+			}
 			
 		  	var btn = document.createElement("BUTTON");
 		  	btn.className  = "btn btn-primary";
