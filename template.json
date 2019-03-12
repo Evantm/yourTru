@@ -1,31 +1,101 @@
 var templates = [
   {
-    "type": "Students",
+    "type": "Student Account Reset Section",
     "template_list": [
       {
-        "label": "passoword reset",
-        "template": "Hi ${student_name}",
+        "label": "BLearn Password Reset",
+        "template": [
+        		"Thank you for your email.  Your Blackboard Learn login information has been verified and reset.  You can access it directly at https://blearn.tru.ca/ ",
+				"",
+				"Username: ${T_ID}",
+				"",
+				"Password:  Your birth date in the format YYMMDD (no dashes or spaces) ",
+				"",
+				"Blackboard Learn Tutorials: https://www.tru.ca/its/students/blearn",
+				"",
+				"If you require further assistance, you can contact us at 1-888-852-8533 (Toll-Free in Canada), 250-852-6800 (in Kamloops) or via email @ ITServiceDesk@tru.ca.  Please be sure to include your TRU ID on all correspondence.",
+				"",
+				"${signature}"
+			],
         "variables": [
-          "student_name"
+        	"T_ID","signature"
         ]
-      }
+      },
+      {
+        "label": "Student Account 2018",
+        "template": [
+        	"Thank you for your email.  Your TRU ID account password has been reset and the information is below.  ",
+        	"",
+        	"Your TRU ID allows you to log in to myTRU, campus computers, Library Resources, Moodle, on campus Wireless (Eduroam) and the Student Outlook Email.",
+        	"",
+        	"The myTRU portal provides many helpful services including application tracking, online payment, course registration, financial information, and important campus announcements. More information can be found at: https://www.tru.ca/its/students/mytru.html.",
+        	"",
+        	"To get started in myTRU you must first change the password that you have been assigned. You can do this by going to https://myID.tru.ca and entering your TRU ID and default password in the \"Login to Password Portal\" box: ",
+        	"",
+        	"TRU ID: ${T_ID}",
+        	"",
+        	"Password: TRUddmmmyy (where ddmmmyy relates to your date of birth.  For example, if you were born on September 3, 1991, your password would be TRU03sep91)",
+        	"",
+        	"Once you have changed your password you can access myTRU by going to https://mytru.tru.ca and entering your TRU ID (user name) and newly created password.",
+        	"",
+        	"Other Resources where this username and password will work 24 hours after registering for a course or program:",
+        	"Moodle: https://moodle.tru.ca",
+        	"Student Outlook Email:  https://mywebmail.mytru.ca",
+			"Eduroam or TRU Wireless on Campus",
+        	"Library Resources",
+        	"",
+        	"If you require further technical assistance, you can contact us at 1-888-852-8533 (Toll-Free in Canada), 250-852-6800 (in Kamloops) or via email @ ITServiceDesk@tru.ca.  Please be sure to include your TRU ID on all correspondence.",
+        	"",
+			"${signature}"
+        ],
+        "variables": [
+        	"T_ID", "signature"
+        ]
+      },
+
+
     ]
   },
-
-
   {
     "type": "Staff",
     "template_list": [
       {
         "label": "Something Complicated",
-        "template": "Hello ${staff_name}, my name is ${my_name}",
+        "template": [
+        			"Hello ${staff_name},", 
+        			"my name is ${my_name}"],
         "variables": [
           "staff_name", "my_name"
         ]
       }
     ]
+  },
+  {
+    "type": "Melvin",
+    "template_list": [
+      {
+        "label": "Testing",
+        "template": "My name is ${my_name}",
+        "variables": [
+          "my_name"
+        ]
+      }, {
+        "label": "Testing12",
+        "template": "My name is ${my_name}",
+        "variables": [
+          "my_name"
+        ]
+      }
+    ]
+  },
+  {
+  	"type":"static",
+  	"template_list":[
+	  	{
+	  		"label":"signature",
+	  		"template": ["TRU IT Service Desk","Thompson Rivers University (TRU)","Tel: 1-888-852-8533 (Toll-Free Canada and US) or 250-852-6800 (in Kamloops)","Email Address: ITServiceDesk@tru.ca","Website: https://www.tru.ca/its"],
+	  		"variables": []
+	  	}
+  	]
   }
-
-
-
 ]
