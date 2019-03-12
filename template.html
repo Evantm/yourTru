@@ -40,11 +40,8 @@
 
 		for (var i = template_string.length - 1; i >= 0; i--) {
 			console.log(template_string[i],signature)
-			if (template_string[i] == 'my_name'){
+			if (template_string[i] == 'my_name' || template_string[i] == 'signature'){
 				variables_dict[template_string[i]] = name;
-			}else if (template_string[i] == 'signature' && false){
-				variables_dict[template_string[i]] = signature;
-				console.log('added signature');
 			}else{	
  				variables_dict[template_string[i]] = prompt(template_string[i]);
 			}
@@ -61,7 +58,7 @@
 
 
 	for (var i = templates.length - 1; i >= 0; i--) {
-		if (templates[i].type != 'static') {
+		if (templates[i].type == 'static') {continue}
 		var section = document.createElement("SECTION");
 		var header = document.createElement("H1");
 		var header_text = document.createTextNode('\u00A0' + templates[i].type); // for padding
@@ -69,7 +66,6 @@
 		header.appendChild(header_text);
 		section.appendChild(header);
 		section.appendChild( document.createTextNode('\u00A0'));
-		}
 		for (var j = templates[i].template_list.length - 1; j >= 0; j--) {
 
 			var variables = templates[i].template_list[j].variables;
