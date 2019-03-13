@@ -18,7 +18,7 @@ var templates = [
 				"${signature}"
 			],
         "variables": [
-        	"T_ID"
+        	"T_ID","signature"
         ]
       },
       {
@@ -49,7 +49,7 @@ var templates = [
 			"${signature}"
         ],
         "variables": [
-        	"T_ID"
+        	"T_ID", "signature"
         ]
       },
 
@@ -93,8 +93,15 @@ var templates = [
   	"template_list":[
 	  	{
 	  		"label":"signature",
-	  		"template": ["TRU IT Service Desk","Thompson Rivers University (TRU)","Tel: 1-888-852-8533 (Toll-Free Canada and US) or 250-852-6800 (in Kamloops)","Email Address: ITServiceDesk@tru.ca","Website: https://www.tru.ca/its"],
-	  		"variables": []
+	  		"template": [
+          "${my_name}",
+          "TRU IT Service Desk",
+          "Thompson Rivers University (TRU)",
+          "Tel: 1-888-852-8533 (Toll-Free Canada and US) or 250-852-6800 (in Kamloops)",
+          "Email Address: ITServiceDesk@tru.ca",
+          "Website: https://www.tru.ca/its"
+        ],
+	  		"variables": ["my_name"]
 	  	}
   	]
   }
