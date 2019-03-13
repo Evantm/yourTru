@@ -21,17 +21,14 @@
 	}
 
 	function copyToClipboard(text){
-	    var dummy = document.createElement("textarea");
-	    dummy.setAttribute("id", "myTextarea");
-	    document.body.appendChild(dummy);
-	    document.getElementById("myTextarea").value = text;
-	    document.getElementById("myTextarea").focus();
-	    document.getElementById("myTextarea").select();
-	    document.oncopy = function (e) {
-	    	    setTimeout(function () {
-	    			document.body.removeChild(dummy);
-		    }, 250)
-	    };
+		navigator.clipboard.writeText(text)
+	  .then(() => {
+	    console.log('Text copied to clipboard');
+	  })
+	  .catch(err => {
+	    // This can happen if the user denies clipboard permissions:
+	    console.error('Could not copy text: ', err);
+	  });
 	}
 
 
@@ -40,8 +37,10 @@
 
 		for (var i = template_string.length - 1; i >= 0; i--) {
 			console.log(template_string[i],signature)
-			if (template_string[i] == 'my_name' || template_string[i] == 'signature'){
+			if (template_string[i] == 'my_name'){
 				variables_dict[template_string[i]] = name;
+			}else if (template_string[i] == 'signature'){
+				variables_dict[template_string[i]] = signature;
 			}else{	
  				variables_dict[template_string[i]] = prompt(template_string[i]);
 			}
@@ -58,10 +57,11 @@
 
 
 	for (var i = templates.length - 1; i >= 0; i--) {
-		if (templates[i].type == 'static') {continue}
+
 		var section = document.createElement("SECTION");
 		var header = document.createElement("H1");
 		var header_text = document.createTextNode('\u00A0' + templates[i].type); // for padding
+		if (templates[i].type == 'static') {section.style.display = "none";}
 
 		header.appendChild(header_text);
 		section.appendChild(header);
@@ -72,8 +72,9 @@
 			var template = templates[i].template_list[j].template;
   			var text = document.createTextNode(templates[i].template_list[j].label);
   			console.log('s',templates[i].template_list[j]);
+
 			if(templates[i].template_list[j].label == 'signature'){
-				signature = templates[i].template_list[j].template.join("\r\n");
+				signature = templates[i].template_list[j].template.join("\r\n").interpolate({"my_name":name});
 				console.log('sig',signature);
 				continue;
 			}
